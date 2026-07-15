@@ -9,7 +9,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
   const { data, error } = await sb.auth.signInWithPassword({ email, password });
   if (error) { errorMsg.textContent = error.message; return; }
 
-  const { data: profile, error: pErr } = await supabase
+  const { data: profile, error: pErr } = await sb
     .from("profiles")
     .select("role")
     .eq("id", data.user.id)
