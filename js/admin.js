@@ -44,7 +44,6 @@ async function loadUsers() {
     </tr>
   `).join("");
 
-  // Populate teacher dropdowns
   const teachers = users.filter(u => u.role === "teacher");
   const teacherOptions = teachers.map(t => `<option value="${t.id}">${t.name}</option>`).join("");
   document.getElementById("nu-teacher").innerHTML = teacherOptions || `<option value="">No teachers yet</option>`;
@@ -73,16 +72,17 @@ async function handleCreateUser(e) {
 
   const role = document.getElementById("nu-role").value;
   const name = document.getElementById("nu-name").value.trim();
-  const email = document.getElementById("nu-email").value.trim();
-  const password = document.getElementById("nu-password").value;
   const phone = document.getElementById("nu-phone").value.trim();
+  const password = document.getElementById("nu-password").value;
   const subject = document.getElementById("nu-subject").value.trim();
   const teacherId = document.getElementById("nu-teacher").value;
 
-  if (!name || !email || password.length < 6) {
-    errorEl.textContent = "Name, email, and a 6+ character password are required.";
+  if (!name || !phone || password.length < 6) {
+    errorEl.textContent = "Name, phone number, and a 6+ character password are required.";
     return;
   }
+
+  const email = phoneToEmail(phone); // hidden internal email, generated from phone
 
   // Use a SEPARATE client (no session persistence) so signing up this new
   // user does not overwrite the admin's own logged-in session.
@@ -96,7 +96,7 @@ async function handleCreateUser(e) {
     return;
   }
 
-  const profileRow = { id: signUpData.user.id, role, name, phone: phone || null };
+  const profileRow = { id: signUpData.user.id, role, name, phone };
   if (role === "teacher") profileRow.subject = subject || null;
   if (role === "student") profileRow.teacher_id = teacherId || null;
 
