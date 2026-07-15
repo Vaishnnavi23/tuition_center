@@ -11,7 +11,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // actually emailed, it's just used as a unique login ID internally.
 function phoneToEmail(phone) {
   const clean = String(phone).replace(/[^0-9]/g, "");
-  return `${clean}@tuitioncenter.local`;
+  return `${clean}@tuitioncenter.com`;
 }
 
 // Redirects to login if not authenticated. Returns {user, profile}.
