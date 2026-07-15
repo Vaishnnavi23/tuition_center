@@ -9,7 +9,7 @@ async function requireAuth(allowedRole) {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = "/index.html"; return null; }
 
-  const { data: profile, error } = await supabase
+  const { data: profile, error } = await sb
     .from("profiles")
     .select("*")
     .eq("id", session.user.id)
